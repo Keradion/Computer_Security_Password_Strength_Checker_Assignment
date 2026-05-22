@@ -78,29 +78,128 @@ python3 main.py
 ## Usage
 
 1. Start the program with `python main.py`.
-2. Enter a password when prompted (input is hidden for security).
-3. Review the score, strength classification, and detailed breakdown.
+2. Enter a password when prompted (input is visible as you type).
+3. Review the score, strength classification, and breakdown.
 
-Example:
+---
 
-```bash
-$ python main.py
+## Test Cases
 
-============================================================
-           PASSWORD STRENGTH CHECKER
-============================================================
+The following three test cases demonstrate how the tool evaluates weak, strong, and very strong passwords.
 
-Enter a password to evaluate.
-(Input is hidden for security.)
+### Test Case 1 — Common Password (Very Weak)
 
-Password:
-------------------------------------------------------------
-EVALUATION RESULTS
-------------------------------------------------------------
+**Input:** `password`
 
-  Final Score          : 5
-  Strength Classification : Very Strong
+| Result | Value |
+|--------|-------|
+| Score | 1 / 7 |
+| Strength | 🔴 Very Weak — easily cracked |
+| Length | 8 characters (+2 points) |
+| Variety | +1 point (lowercase only) |
+| Weak pattern | Common password detected |
+| Penalty | -2 points applied |
+
+**Output:**
+
 ```
+📊  EVALUATION RESULT
+--------------------------------------------------
+  🎯 Score      : 1 / 7
+  🔴 Strength   : Very Weak — easily cracked
+
+📋  BREAKDOWN
+--------------------------------------------------
+  📏 Length (8 chars)  : +2 points
+  ✅ Lowercase letters
+  ❌ Uppercase letters
+  ❌ Numbers
+  ❌ Special characters
+  🔤 Variety total : +1 points
+
+  ⚠️  Security warnings:
+     🚨 Common password detected: "password"
+     📉 Penalty applied: -2 points
+```
+
+---
+
+### Test Case 2 — Mixed Characters (Strong)
+
+**Input:** `Abc123`
+
+| Result | Value |
+|--------|-------|
+| Score | 4 / 7 |
+| Strength | 🟢 Strong — good password |
+| Length | 6 characters (+1 point) |
+| Variety | +3 points (lowercase, uppercase, numbers) |
+| Weak pattern | None |
+| Penalty | None |
+
+**Output:**
+
+```
+📊  EVALUATION RESULT
+--------------------------------------------------
+  🎯 Score      : 4 / 7
+  🟢 Strength   : Strong — good password
+
+📋  BREAKDOWN
+--------------------------------------------------
+  📏 Length (6 chars)  : +1 points
+  ✅ Lowercase letters
+  ✅ Uppercase letters
+  ✅ Numbers
+  ❌ Special characters
+  🔤 Variety total : +3 points
+
+  ✅ No weak patterns detected
+```
+
+---
+
+### Test Case 3 — Complex Password (Very Strong)
+
+**Input:** `MyP@ssw0rd!`
+
+| Result | Value |
+|--------|-------|
+| Score | 6 / 7 |
+| Strength | 💪 Very Strong — excellent password |
+| Length | 11 characters (+2 points) |
+| Variety | +4 points (all character types) |
+| Weak pattern | None |
+| Penalty | None |
+
+**Output:**
+
+```
+📊  EVALUATION RESULT
+--------------------------------------------------
+  🎯 Score      : 6 / 7
+  💪 Strength   : Very Strong — excellent password
+
+📋  BREAKDOWN
+--------------------------------------------------
+  📏 Length (11 chars)  : +2 points
+  ✅ Lowercase letters
+  ✅ Uppercase letters
+  ✅ Numbers
+  ✅ Special characters
+  🔤 Variety total : +4 points
+
+  ✅ No weak patterns detected
+```
+
+**How to run these tests:**
+
+```powershell
+cd Computer_Security_Password_Strength_Checker_Assignment
+python main.py
+```
+
+Then enter each password above when prompted.
 
 ---
 
@@ -159,7 +258,7 @@ Computer_Security_Password_Strength_Checker_Assignment/
 - Rule-based evaluation inspired by NIST, OWASP, and general cybersecurity practices
 - Deterministic scoring: the same password always produces the same result
 - Modular design using separate functions for input, evaluation, and display
-- Password input is handled with Python's `getpass` module (no echo to the terminal)
+- Password input is visible using Python's `input()` function for easy testing and demonstration
 
 ---
 

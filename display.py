@@ -1,60 +1,73 @@
 """CLI output formatting for password strength results."""
 
+STRENGTH_STYLE = {
+    "Very Weak": ("🔴", "Very Weak — easily cracked"),
+    "Weak": ("🟠", "Weak — needs improvement"),
+    "Medium": ("🟡", "Medium — acceptable, but not ideal"),
+    "Strong": ("🟢", "Strong — good password"),
+    "Very Strong": ("💪", "Very Strong — excellent password"),
+}
+
 
 def print_banner() -> None:
     print()
-    print("=" * 60)
-    print("           PASSWORD STRENGTH CHECKER")
-    print("=" * 60)
+    print("=" * 50)
+    print("   🔐  PASSWORD STRENGTH CHECKER")
+    print("=" * 50)
     print()
+
+
+def _variety_icon(detail: str) -> str:
+    return "✅" if "+1 point" in detail else "❌"
+
+
+def _variety_label(detail: str) -> str:
+    label = detail.split(":")[0]
+    replacements = {
+        "Contains lowercase letters (a-z)": "Lowercase letters",
+        "Contains uppercase letters (A-Z)": "Uppercase letters",
+        "Contains numbers (0-9)": "Numbers",
+        "Contains special characters": "Special characters",
+    }
+    return replacements.get(label, label)
 
 
 def print_results(result: dict) -> None:
-    """Display evaluation results in a structured format."""
-    print("-" * 60)
-    print("EVALUATION RESULTS")
-    print("-" * 60)
+    """Display a clear, concise evaluation summary."""
+    emoji, strength_text = STRENGTH_STYLE.get(
+        result["classification"],
+        ("⚪", result["classification"]),
+    )
+
     print()
-    print(f"  Final Score          : {result['final_score']}")
-    print(f"  Strength Classification : {result['classification']}")
+    print("📊  EVALUATION RESULT")
+    print("-" * 50)
+    print(f"  🎯 Score      : {result['final_score']} / 7")
+    print(f"  {emoji} Strength   : {strength_text}")
     print()
-    print("-" * 60)
-    print("DETAILED BREAKDOWN")
-    print("-" * 60)
-    print()
-    print("  [Length Scoring]")
-    print(f"    {result['length_detail']}")
-    print(f"    Length subtotal: {result['length_score']} point(s)")
-    print()
-    print("  [Character Variety Scoring]")
+    print("📋  BREAKDOWN")
+    print("-" * 50)
+    print(f"  📏 Length ({result['password_length']} chars)  : +{result['length_score']} points")
+
     for detail in result["variety_details"]:
-        print(f"    {detail}")
-    print(f"    Variety subtotal: {result['variety_score']} point(s)")
-    print()
-    print(f"  Base score (before penalties): {result['base_score']}")
-    print()
-    print("  [Weak Pattern Detection]")
+        icon = _variety_icon(detail)
+        label = _variety_label(detail)
+        print(f"  {icon} {label}")
+
+    print(f"  🔤 Variety total : +{result['variety_score']} points")
+
     if result["weak_patterns"]:
+        print()
+        print("  ⚠️  Security warnings:")
         for finding in result["weak_patterns"]:
-            print(f"    - {finding}")
+            print(f"     🚨 {finding}")
+        if result["forced_very_weak"]:
+            print("     ⛔ Multiple weak patterns — forced to Very Weak")
+        elif result["base_score"] != result["final_score"]:
+            print(f"     📉 Penalty applied: -2 points")
     else:
-        print("    - No weak patterns found")
-    print()
-    print(f"  [Penalty Application]")
-    print(f"    {result['penalty_detail']}")
-    print()
-    print("-" * 60)
-    print("SCORING REFERENCE")
-    print("-" * 60)
-    print("  Length:        0-3 points")
-    print("  Variety:       0-4 points")
-    print("  Penalty:       -2 points (or forced Very Weak if multiple patterns)")
-    print()
-    print("  Classifications:")
-    print("    0-1  -> Very Weak")
-    print("    2    -> Weak")
-    print("    3    -> Medium")
-    print("    4    -> Strong")
-    print("    5-6  -> Very Strong")
-    print("=" * 60)
+        print()
+        print("  ✅ No weak patterns detected")
+
+    print("=" * 50)
     print()
