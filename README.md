@@ -1,6 +1,19 @@
 # Password Strength Checker (CLI Tool)
 
-A simple command-line tool that evaluates the strength of a password based on length, character diversity, and common security weaknesses. Built for educational purposes in a Computer Security course.
+A command-line tool that evaluates the strength of a password based on length, character diversity, and common security weaknesses.
+
+---
+
+## Academic Context
+
+| | |
+|---|---|
+| **University** | Addis Ababa University |
+| **Course** | Computer Security |
+| **Year** | 4th Year |
+| **Instructor** | Dr. Amsale |
+
+This project was developed as part of the **Computer Security** course at **Addis Ababa University** (4th year), as requested by **Dr. Amsale**. It demonstrates understanding of password security principles, rule-based scoring systems, input validation, and basic threat resistance concepts such as brute force, dictionary attacks, and pattern detection.
 
 ---
 
@@ -152,4 +165,4 @@ Computer_Security_Password_Strength_Checker_Assignment/
 
 ## License
 
-Educational project — use and modify as needed for coursework and learning.
+Academic assignment project for the Computer Security course at Addis Ababa University. For educational and coursework purposes only.
